@@ -1,0 +1,42 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    # volumes:
+    #   - .:/app
+    #   - /app/node_modules
+    depends_on:
+      - mongo
+      - redis
+
+  mongo:
+    container_name: mongo
+    image: mongo:latest
+    restart: always
+    ports:
+      - "27018:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=test
+      - MONGO_INITDB_ROOT_PASSWORD=test
+    volumes:
+      - mongo_data:/data/db
+
+  redis:
+    container_name: redis_dev
+    image: redis:alpine
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_dev_data:/data
+    command: [ "redis-server", "--protected-mode", "no" ]
+
+volumes:
+  mongo_data
+  redis_dev_data
