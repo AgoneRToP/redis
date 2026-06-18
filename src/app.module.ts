@@ -10,13 +10,7 @@ import { ProductsModule, UsersModule } from './modules';
       isGlobal: true,
       envFilePath: join(process.cwd(), '.env'),
     }),
-    MongooseModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => ({
-        uri: configService.get<string>('MONGO_URL'),
-      }),
-    }),
+    MongooseModule.forRoot(process.env.MONGO_URL as string),
     UsersModule,
     ProductsModule,
   ],

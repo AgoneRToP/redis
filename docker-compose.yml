@@ -8,9 +8,6 @@ services:
       - "3000:3000"
     env_file:
       - .env
-    # volumes:
-    #   - .:/app
-    #   - /app/node_modules
     depends_on:
       - mongo
       - redis
@@ -38,5 +35,5 @@ services:
     command: [ "redis-server", "--protected-mode", "no" ]
 
 volumes:
-  mongo_data
-  redis_dev_data
+  mongo_data:
+  redis_dev_data:
