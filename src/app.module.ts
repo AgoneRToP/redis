@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { join } from 'node:path';
-import { ProductsModule, UsersModule } from './modules';
+import { FilesModule, ProductsModule, UsersModule } from './modules';
 
 @Module({
   imports: [
@@ -10,9 +10,16 @@ import { ProductsModule, UsersModule } from './modules';
       isGlobal: true,
       envFilePath: join(process.cwd(), '.env'),
     }),
-    MongooseModule.forRoot(process.env.MONGO_URL as string),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get<string>('MONGO_URL'),
+      }),
+    }),
     UsersModule,
     ProductsModule,
+    FilesModule,
   ],
 })
 export class AppModule {}

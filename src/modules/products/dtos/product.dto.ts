@@ -1,4 +1,13 @@
-import { IsString, IsNotEmpty, IsOptional, IsNumber, IsInt, Min, IsBoolean } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsOptional,
+  IsNumber,
+  IsInt,
+  Min,
+  IsBoolean,
+  IsObject,
+} from 'class-validator';
 
 export class CreateProductDto {
   @IsString()
@@ -20,4 +29,7 @@ export class CreateProductDto {
   @IsBoolean()
   @IsOptional()
   isActive?: boolean;
+
+  @IsObject()
+  file: File;
 }

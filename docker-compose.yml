@@ -11,6 +11,7 @@ services:
     depends_on:
       - mongo
       - redis
+      - minio
 
   mongo:
     container_name: mongo
@@ -34,6 +35,22 @@ services:
       - redis_dev_data:/data
     command: [ "redis-server", "--protected-mode", "no" ]
 
+  minio:
+    container_name: minio
+    image: minio/minio
+    restart: unless-stopped
+    environment:
+      - MINIO_ROOT_USER=test
+      - MINIO_ROOT_PASSWORD=12345678
+      - MINIO_BUCKET_DEFAULT=test
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+
 volumes:
   mongo_data:
   redis_dev_data:
+  minio_data:

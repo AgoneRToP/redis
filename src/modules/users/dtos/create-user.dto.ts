@@ -1,7 +1,9 @@
+import { File } from '@/modules/files/models';
 import {
   IsEmail,
   IsNotEmpty,
   IsNumber,
+  IsObject,
   IsOptional,
   IsPositive,
   IsString,
@@ -27,8 +29,8 @@ export class CreateUserDto {
 
   @IsString()
   @IsNotEmpty()
-//   @IsStrongPassword({
-//     minLength: 4,
-//   })
   password: string;
+
+  @IsObject()
+  file: File;
 }

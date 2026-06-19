@@ -1,3 +1,4 @@
+import { File } from '@/modules/files/models';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { SchemaTypes } from 'mongoose';
 
@@ -14,6 +15,9 @@ export class User {
 
   @Prop({ type: SchemaTypes.String, allowNull: false })
   password: string;
+
+  @Prop({ type: SchemaTypes.ObjectId })
+  file: File
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

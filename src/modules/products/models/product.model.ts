@@ -1,3 +1,4 @@
+import { File } from '@/modules/files/models';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { SchemaTypes } from 'mongoose';
 
@@ -17,6 +18,9 @@ export class Product {
 
   @Prop({ type: SchemaTypes.Boolean, allowNull: false, default: true })
   isActive: boolean;
+
+  @Prop({ type: SchemaTypes.ObjectId })
+  file: File
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
