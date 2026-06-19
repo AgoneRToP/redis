@@ -8,11 +8,15 @@ import { User } from './models/user.model';
 import { Model } from 'mongoose';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { RedisService } from '@/common/redis/redis.service';
+import { MinioService } from '@/common/minio/minio.service';
+import { File } from '../files/models';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User.name) private readonly model: Model<User>,
+    @InjectModel(File.name) private readonly modelFile: Model<File>,
+    private readonly service: MinioService,
     private readonly redis: RedisService,
   ) {}
 
@@ -41,13 +45,16 @@ export class UsersService {
 
   async create(payload: CreateUserDto) {
     const existing = await this.model.findOne({ email: payload.email });
-
     if (existing) {
       throw new ConflictException('User already exists');
     }
 
+    const { fileName } = await this.service.upload(payload.file);
+    const file = await this.modelFile.create({ fileName });
+
     const user = await this.model.create({
       ...payload,
+      file,
     });
 
     return user;

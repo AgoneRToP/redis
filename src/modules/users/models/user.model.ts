@@ -17,7 +17,7 @@ export class User {
   password: string;
 
   @Prop({ type: SchemaTypes.ObjectId })
-  file: File
+  file: File;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

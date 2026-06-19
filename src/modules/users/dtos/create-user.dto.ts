@@ -7,7 +7,6 @@ import {
   IsOptional,
   IsPositive,
   IsString,
-  IsStrongPassword,
   Min,
 } from 'class-validator';
 
@@ -31,6 +30,5 @@ export class CreateUserDto {
   @IsNotEmpty()
   password: string;
 
-  @IsObject()
-  file: File;
+  file: Express.Multer.File;
 }

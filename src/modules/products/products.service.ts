@@ -8,11 +8,15 @@ import { Product } from './models';
 import { Model } from 'mongoose';
 import { CreateProductDto } from './dtos';
 import { RedisService } from '@/common/redis/redis.service';
+import { MinioService } from '@/common/minio/minio.service';
+import { File } from '../files/models';
 
 @Injectable()
 export class ProductsService {
   constructor(
     @InjectModel(Product.name) private readonly model: Model<Product>,
+        @InjectModel(File.name) private readonly modelFile: Model<File>,
+        private readonly service: MinioService,
     private readonly redis: RedisService,
   ) {}
 
@@ -40,8 +44,12 @@ export class ProductsService {
   }
 
   async create(payload: CreateProductDto) {
+    const { fileName } = await this.service.upload(payload.file);
+    const file = await this.modelFile.create({ fileName });
+
     const product = await this.model.create({
       ...payload,
+      file,
     });
 
     return product;

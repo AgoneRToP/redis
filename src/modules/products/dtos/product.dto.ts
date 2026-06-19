@@ -31,5 +31,5 @@ export class CreateProductDto {
   isActive?: boolean;
 
   @IsObject()
-  file: File;
+  file: Express.Multer.File;
 }
